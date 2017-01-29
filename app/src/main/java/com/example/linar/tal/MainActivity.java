@@ -3,11 +3,15 @@ package com.example.linar.tal;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.UnsupportedEncodingException;
@@ -15,6 +19,8 @@ import java.io.UnsupportedEncodingException;
 public class MainActivity extends AppCompatActivity {
 
     private WebView mWebView;
+    private Button ricerca;
+    private EditText searchBar;
     private String oldest, fb_dtsg, xhpc_targetid;
 
 
@@ -23,13 +29,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Istanza dei Widget
         mWebView = (WebView) findViewById(R.id.checkLogin);
+        ricerca = (Button) findViewById(R.id.button);
+        searchBar = (EditText) findViewById(R.id.searchBar);
 
         // Enable Javascript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
         mWebView.loadUrl("http://www.facebook.com");
+
+
 
         // Forza la versione desktop del sito
         //TODO: capire quale browser usare
@@ -53,5 +64,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //La funzione JS parte quando premo il bottone
+        ricerca.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                //TODO controllo su searchbar vuota
+                effettuaRicerca(mWebView, searchBar.getText());
+            }
+
+        });
     }
+
+    private void effettuaRicerca(WebView webView, Editable text) {
+        webView.loadUrl("javascript:nomeRicerca("+text+")");
+    }
+
+
 }

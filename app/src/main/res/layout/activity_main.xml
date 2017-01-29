@@ -12,7 +12,7 @@
 
 
     <Button
-        android:text="Button"
+        android:text="Ricerca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="258dp"
@@ -26,4 +26,14 @@
         android:layout_below="@+id/button">
 
     </WebView>
+
+    <EditText
+        android:id="@+id/searchBar"
+        android:inputType="text"
+        android:hint="Inserisci Nome e Cognome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkLogin"
+        android:layout_toRightOf="@+id/button"
+        android:layout_toEndOf="@+id/button" />
 </RelativeLayout>
