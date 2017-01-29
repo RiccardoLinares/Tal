@@ -42,8 +42,10 @@ var persona,
     lingua_corrente = "currentLang";
 
 
-function test(){
-    return "ciao questo è un test";
+var stringNomeRicerca
+
+function nomeRicerca(stringNome){
+    stringNomeRicerca = stringNome;
 }
 
 /* ***** CHIAMATE SERVER ***** */

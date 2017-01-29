@@ -27,7 +27,5 @@ public class LoginActivity extends AppCompatActivity {
         // Stop local links and redirects from opening in browser instead of WebView
         mWebView.setWebViewClient(new MyAppWebViewClient());
 
-
-
     }
 }
