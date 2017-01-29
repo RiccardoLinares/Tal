@@ -46,13 +46,14 @@ var persona,
         da java usa l'interface per chiamare le funzioni javascript e da javascript usa il return per passare le info!
 
 */
-var stringNomeRicerca
+var stringNomeRicerca;
 
 /* FUNZIONI DA RICHIAMARE IN JAVA */
 
 // indica il nome della persona da cercare
 function nomeRicerca(stringNome){
     stringNomeRicerca = stringNome;
+    inizializza();
 }
 
 
@@ -189,7 +190,7 @@ function inizializza() {
         nascondiDiversi();
 
     } else {
-        alert("Inserisci un nome");
+        console.log("Inserisci un nome");
 
     }
 };
@@ -260,7 +261,4 @@ $(document).ready(function() {
             }
         }
     });
-
-
-
 });

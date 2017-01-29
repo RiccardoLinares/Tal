@@ -11,29 +11,76 @@
     tools:context="com.example.linar.tal.MainActivity">
 
 
-    <Button
-        android:text="Ricerca"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="258dp"
-        android:layout_y="5dp"
-        android:id="@+id/button" />
-
-    <WebView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/checkLogin"
-        android:layout_below="@+id/button">
-
-    </WebView>
-
-    <EditText
-        android:id="@+id/searchBar"
-        android:inputType="text"
-        android:hint="Inserisci Nome e Cognome"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/checkLogin"
-        android:layout_toRightOf="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/checkLogin"
+                android:layout_toEndOf="@+id/button"
+                android:layout_toRightOf="@+id/button"
+                android:hint="Inserisci Nome e Cognome"
+                android:inputType="text"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="113dp"
+                android:layout_height="wrap_content"
+                android:layout_x="258dp"
+                android:layout_y="5dp"
+                android:text="Ricerca" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="500px"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+            </TableLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <WebView
+                android:id="@+id/checkLogin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/scrollView2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+            </WebView>
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

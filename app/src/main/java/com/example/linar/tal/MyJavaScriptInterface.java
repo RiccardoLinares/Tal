@@ -16,19 +16,25 @@ public class MyJavaScriptInterface {
 
     private TextView contentView;
 
-        // Istanzia una TextView e la attribuisce alla variabile privata contentView
-        public MyJavaScriptInterface() {
-        }
+    // Istanzia una TextView e la attribuisce alla variabile privata contentView
+    public MyJavaScriptInterface() {
+    }
 
-        // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
-        @JavascriptInterface
-        public void setVariabili(String old, String dtsg, String xhpc) throws UnsupportedEncodingException {
-            oldest = old.substring(old.indexOf("oldest=") + 7, old.indexOf("&source"));
-            fb_dtsg = dtsg;
-            xhpc_targetid = xhpc;
+    // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
+    @JavascriptInterface
+    public void setVariabili(String old, String dtsg, String xhpc) throws UnsupportedEncodingException {
+        oldest = old.substring(old.indexOf("oldest=") + 7, old.indexOf("&source"));
+        fb_dtsg = dtsg;
+        xhpc_targetid = xhpc;
 
-            Log.d("oldest", oldest);
-            Log.d("fb_dtsg", fb_dtsg);
-            Log.d("xhpc_targetid", xhpc_targetid);
-        }
+        Log.d("oldest", oldest);
+        Log.d("fb_dtsg", fb_dtsg);
+        Log.d("xhpc_targetid", xhpc_targetid);
+    }
+
+    // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
+    @JavascriptInterface
+    public String[] getRisultati(String[] array) throws UnsupportedEncodingException {
+        return array;
+    }
 }
