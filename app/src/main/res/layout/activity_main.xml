@@ -11,4 +11,19 @@
     tools:context="com.example.linar.tal.MainActivity">
 
 
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="258dp"
+        android:layout_y="5dp"
+        android:id="@+id/button" />
+
+    <WebView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/checkLogin"
+        android:layout_below="@+id/button">
+
+    </WebView>
 </RelativeLayout>
