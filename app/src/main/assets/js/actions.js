@@ -7,7 +7,6 @@
  */
 
 var persona,
-    myinput,
     numAggiornamenti = 0,
     numeroRisultati = 0,
     caricamento = 10,
@@ -25,7 +24,6 @@ var persona,
     numErrorLimit = 2,
     numError = 0,
     arrayRisultati = new Array(), //array dei risultati
-    arrayTuttiRisultati = new Array(), //array che contiene tutti i risultati
     nuoviRisultati = 0, //nuovi risultati per notifiche
     objRisultati = {}, //oggetto dei risultati contiene varMessage=messaggio e varUrl=url
     numero_risultati_notifiche = -1,
@@ -42,11 +40,28 @@ var persona,
     lingua_corrente = "currentLang";
 
 
+/*
+        TODO
+        NOTA BENE:
+        da java usa l'interface per chiamare le funzioni javascript e da javascript usa il return per passare le info!
+
+*/
 var stringNomeRicerca
 
+/* FUNZIONI DA RICHIAMARE IN JAVA */
+
+// indica il nome della persona da cercare
 function nomeRicerca(stringNome){
     stringNomeRicerca = stringNome;
 }
+
+function risultatiTrovati(){
+    return arrayRisultati;
+}
+/* END FUNZIONI DA RICHIAMARE IN JAVA */
+
+
+
 
 /* ***** CHIAMATE SERVER ***** */
 // Funzione che fa le chiamate al server
@@ -98,75 +113,17 @@ function callAjaxTicker() {
 }
 
 function checkNuoviFeed(stringa) {
-    //limite_risultati_visualizzati
-    if (arrayTuttiRisultati.length < limite_risultati_visualizzati) {
-        //Inserisce i risultati e controlla le corrispondenze
+         //Inserisce i risultati e controlla le corrispondenze
         $('.tickerActivityStories').append(stringa);
         $(".pam.tickerMorePager.stat_elem").hide();
         //Rimuove i "mostra altro" in eccesso (lascia solo l'ULTIMO)
         $(".pam.tickerMorePager.stat_elem").not("div:gt(-2)").remove();
-        //Rimuove i "mostra altro" in eccesso (lascia solo il PRIMO)
-        //$(".pam.tickerMorePager.stat_elem").remove("div:gt(0)");
         if (flagServer) {
             callAjaxTicker();
         }
-    } else {
-        // stampa messaggio errore
-        $('.controllo').append('<p style="color: red;">' + limite_risultati_vis_error_print + '</p>');
-        // ferma il check degli errori controllaFermo
-        stopRicerca();
-        //superato il limite si elimina il mostra altro e si ferma la ricerca!
-        $(".pam.tickerMorePager.stat_elem").remove();
-    }
-
-}
-
-/* ***** NOTIFICHE ***** */
-// Richiede il permesso di inviare notifiche
-document.addEventListener('DOMContentLoaded', function() {
-    if (Notification.permission !== "granted")
-        Notification.requestPermission();
-});
-
-// Funzione che genera le notifiche
-function notifyMe(quanteNotifiche) {
-
-}
-
-/* ***** EMAIL ***** */
-// Invia l'email al destinatario
-function sendEmail(listaRisultati, toEmail) {
-    $.post("https://takealook-extension.net/sendemail.php", {
-        myArray: listaRisultati,
-        miaEmail: toEmail,
-        miaRicerca: $('.cerca_nome').val(),
-        lingua: lingua_corrente
-    }, function(result) {
-
-        console.log(result);
-    });
 }
 
 
-function userSettings() {
-
-
-}
-
-// Controlla le impostazioni dopo ogni risultato aggiunto
-function checkRisultati() {
-
-    if (flagNotification && flagInizializza && nuoviRisultati >= numero_risultati_notifiche) {
-        notifyMe(numero_risultati_notifiche);
-        nuoviRisultati = 0;
-        //  console.log("FLAG NOTIFICATION: " + flagNotification);
-    }
-    if (flagEmail && flagInizializza && arrayRisultati.length >= numero_risultati_email) {
-        sendEmail(arrayRisultati, indirizzo_email);
-        arrayRisultati = [];
-        //  console.log("FLAG EMAIL: " + flagEmail);
-    }
-}
 
 
 /* ***** FUNZIONI INTERNE ***** */
@@ -175,10 +132,9 @@ function nascondiDiversi() {
     $('.tickerActivityStories .fbFeedTickerStory').each(function(i, obj) {
         if (!($(this).hasClass('controllatoTAL'))) {
             persona = $(this).find('.fwb');
-            myinput = $('.cerca_nome').val();
             numAggiornamenti = numAggiornamenti + 1;
 
-            if (!(persona.text().toLowerCase().indexOf(myinput.toLowerCase()) >= 0)) {
+            if (!(persona.text().toLowerCase().indexOf(stringNomeRicerca.toLowerCase()) >= 0)) {
                 $(this).remove();
             } else {
                 flagRisultati = true;
@@ -188,13 +144,12 @@ function nascondiDiversi() {
                     varUrl: $(this).find('.tickerStoryLink').attr('href')
                 };
                 arrayRisultati.push(objRisultati);
-                arrayTuttiRisultati.push(objRisultati);
 
                 if (flagNotification) {
                     nuoviRisultati = nuoviRisultati + 1;
                 }
-                checkRisultati();
                 rimuoviPrimo();
+
             }
         }
     });
@@ -202,9 +157,8 @@ function nascondiDiversi() {
 
 
 function aggiungiPrimo() {
-    var nome = $.trim($('.cerca_nome').val().toLowerCase());
-    if (nome.length > 0 ) {
-        cerca_nome = $('.cerca_nome').val();
+    if (stringNomeRicerca.length > 0 ) {
+        cerca_nome = stringNomeRicerca;
     }
     $('.tickerActivityStories').prepend('<div class="fbFeedTickerStory tickerStoryClickable _5f0v loading_take_a_look controllatoTAL" data-rel="async" tabindex="0" data-fte="1" data-ftr="1" aria-controls="js_77" aria-haspopup="true" role="null" aria-describedby="js_mf"><a class="tickerStoryLink" href="/" rel="ignore"><div class="fbFeedTickerBorder"><div class="clearfix tickerStoryBlock"><div class="lfloat _ohe"><img class="_s0 tickerStoryImage _54ru img" src="icon/icon128.png" alt=""><span class="img _55ym _55yq _55yo tickerSpinner" aria-label="Caricamento..." aria-busy="1"></span></div><div class="_42ef"><div class="tickerFeedMessage">' + stai_dando_una_occhiata + ' <span class="fwb">' + cerca_nome + '</span>! ' + attendi_qualche_minuto + '.</div> </div></div></div></a></div>');
 }
@@ -213,27 +167,7 @@ function rimuoviPrimo() {
     $('.loading_take_a_look').remove();
 }
 
-// Controlla che la ricerca non si sia fermata e in caso la fa ripartire
-function controllaFermo() {
-    intervalloFermo = setInterval(function() {
-        numProvv = numAggiornamenti;
-        setTimeout(function() {
-            if (numProvv == numAggiornamenti) {
-                if (numError < numErrorLimit) {
-                    numError = numError + 1;
-                    // console.log('Error n: ' + numError);
 
-                } else {
-                    if (!flagMessaggioErrore) {
-                        $('.controllo').append('<p style="color: red;">' + error_print + '</p>');
-                        flagMessaggioErrore = true;
-                    }
-                    console.log('Too much error, try again later')
-                }
-            }
-        }, 29000)
-    }, 30000);
-}
 
 // Funzione che ferma la ricerca
 function stopRicerca() {
@@ -246,53 +180,19 @@ function stopRicerca() {
 
 function inizializza() {
 
-    var nome = $.trim($('.cerca_nome').val().toLowerCase());
       flagInizializza = true;
     $('.loading_take_a_look').remove();
-    if (nome.length > 0 ){
+    if (stringNomeRicerca.length > 0 ){
         aggiungiPrimo();
         callAjaxTicker();
         nascondiDiversi();
 
-        //controllaFermo();
     } else {
         alert("Inserisci un nome");
 
     }
 };
 
-
- function tutorial() {
-    /*chrome.storage.local.set({
-        'tutorial': true,
-    });
-
-    if (!flagSidebar) {
-      $("._51x_").ready(function() {
-          flagTutorial_step2 = true;
-          $(".fbChatSidebar._5pr2").removeClass("fixed_always");
-          $("#pagelet_bluebar").css({
-              "position": "fixed",
-              "z-index": "300"
-          });
-          $("._48gf.fbDockWrapper.fbDockWrapperRight").css({
-              "z-index": "100"
-          });
-          $("#u_0_1r").css({
-              "z-index": "100"
-          });
-          $("._51x_").prepend('<div id="coverTAL"></div>');
-
-          $("#coverTAL").click(function() {
-              $("#coverTAL").remove();
-              $(".fbChatSidebar._5pr2").addClass("fixed_always");
-              $("#pagelet_bluebar").css({
-                  "z-index": "301"
-              });
-          });
-      });
-    }*/
-}
 
 
 // controlla quale ticker è attivo
@@ -302,48 +202,19 @@ function whichTicker(){
 
   if (!flag_rhc_ticker_hidden) {
       $(".controllo").prependTo(".home_right_column");
-      $(".controllo").css({
-        "background-color": "#fff",
-      });
-
-      $(".controllo").each(function () {
-        this.style.setProperty( 'z-index', 'inherit', 'important' );
-      });
-
-      $(".cerca_nome").css({
-          "border": "1px solid #f0f0f2",
-          "height": "24px",
-      });
 
   } else {
       $(".controllo").insertAfter("#pagelet_canvas_nav_content");
-      $(".controllo").css({
-        "background-color" : "#e9ebee",
-        "z-index" : "10000"
-      });
-
-      $(".cerca_nome").css({
-          "border": "none",
-      });
   }
 }
 
-// Apre il tab con le impostazioni dell'user
-function tabSettings(){
-}
+
 
 // Quando il DOM si carica
 $(document).ready(function() {
 
-    //aggiunta elementi grafici
-    //controllo sidebar (ORGINIALE)
+
     $("#pagelet_canvas_nav_content").after('<div class="controllo"><input id="search_TAL" class="button_TAL search_TAL" type="submit" value=""/><span id="controlloCerca"><input type="text" class="cerca_nome" placeholder="' + chi_vuoi_cercare + '"/></span><p class="printRisultati"></p></div>');
-
-
-    // mostra riquadro aggiornamenti originale se è nascosto
-    /*if(flag_rhc_ticker_hidden && (($("#pagelet_ticker").height()/$("#pagelet_ticker").parent().height())*100)<30){
-      $("#pagelet_ticker").css({"height": "30%"});
-    }*/
 
     // nasconde/mostra i ticker in base a quale dei due è visibile
     // considera anche il resize dello schermo
@@ -389,8 +260,6 @@ $(document).ready(function() {
         }
     });
 
-    // Setta le impostazioni dell'UTENTE
-    userSettings();
 
 
 });

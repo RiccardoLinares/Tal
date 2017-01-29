@@ -31,6 +31,4 @@ public class MyJavaScriptInterface {
             Log.d("fb_dtsg", fb_dtsg);
             Log.d("xhpc_targetid", xhpc_targetid);
         }
-
-
 }
