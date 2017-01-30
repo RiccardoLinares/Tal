@@ -34,7 +34,8 @@ public class MyJavaScriptInterface {
 
     // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
     @JavascriptInterface
-    public String[] getRisultati(String[] array) throws UnsupportedEncodingException {
+    public String[] getRisultati(String[] array) {
+        Log.d("array", array[0].toString());
         return array;
     }
 }

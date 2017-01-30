@@ -56,7 +56,6 @@ function nomeRicerca(stringNome){
     inizializza();
 }
 
-
 function risultatiTrovati(){
     return arrayRisultati;
 }
