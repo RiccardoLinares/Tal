@@ -1,5 +1,6 @@
 package com.example.linar.tal;
 
+import android.content.Context;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.TextView;
@@ -15,9 +16,13 @@ public class MyJavaScriptInterface {
     private String oldest, fb_dtsg, xhpc_targetid;
 
     private TextView contentView;
+    public Context mContext;
 
-    // Istanzia una TextView e la attribuisce alla variabile privata contentView
+    // COSTRUTTORI
     public MyJavaScriptInterface() {
+    }
+    public MyJavaScriptInterface(Context c) {
+        mContext = c;
     }
 
     // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
@@ -30,12 +35,5 @@ public class MyJavaScriptInterface {
         Log.d("oldest", oldest);
         Log.d("fb_dtsg", fb_dtsg);
         Log.d("xhpc_targetid", xhpc_targetid);
-    }
-
-    // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
-    @JavascriptInterface
-    public String[] getRisultati(String[] array) {
-        Log.d("array", array[0].toString());
-        return array;
     }
 }

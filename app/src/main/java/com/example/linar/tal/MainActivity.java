@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -75,12 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 // Inject file js into webpage
                 injectScriptFile jquery = new injectScriptFile(getApplicationContext(), view, "js/jquery.js");
                 injectScriptFile actions = new injectScriptFile(getApplicationContext(), view, "js/actions.js");
-
-                // Get response from webpage function to set oldest and the other variable
-                view.loadUrl("javascript:window.INTERFACE.setVariabili(document.getElementsByClassName('pam uiBoxLightblue tickerMoreLink uiMorePagerPrimary')[0].getAttribute('ajaxify'), document.getElementsByName('fb_dtsg')[0].value, document.getElementsByName('xhpc_targetid')[0].value)");
-                //view.loadUrl("javascript:test();");
-                //view.loadUrl("javascript:window.INTERFACE.getRisultati(risultatiTrovati())");
-
             }
 
             // Intercetta le richieste effettuate al server
@@ -88,30 +84,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 final Uri uri = request.getUrl();
-                //Log.d("RISORSA CARICATA", uri.toString());
                 if(uri.toString().contains("ticker_entstory.php")){
-                    Log.d("Ticker", "CARICATO IL FILE TICKE_ENTSTORY.PHP");
+                    Log.d("RISORSA CARICATA", uri.toString());
 
-                    /*
-                    TODO:
-                    controllare il caricamento del file ticker_entstory.php,
-                    ogni volta che si carica significa che sono stati caricati
-                    nuovi risultati nel ticker,
-                    quindi bisogna aggiornare i dati nello scrollView
-                    NB. in acions.js hai che risultatiTrovati() return un array,
-                        ma getRisultati vuole un arrayList<String>
-
-                    */
-
-                    // Richiama la funzione javascript risultatiTrovati()
-                    mWebView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mWebView.loadUrl("javascript:window.INTERFACE.getRisultati(risultatiTrovati())");
-                        }
-                    });
                 }
-                return null;
+                return super.shouldInterceptRequest(view, request);
             }
         });
 
@@ -136,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private void effettuaRicerca(WebView webView, String text) {
         webView.loadUrl("javascript:nomeRicerca('" + text + "')");
     }
+
 
     //Input: array con i risultati e la scrollview
     private void riempiScrollView(ArrayList<String> risultati) {

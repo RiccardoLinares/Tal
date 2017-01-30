@@ -56,9 +56,16 @@ function nomeRicerca(stringNome){
     inizializza();
 }
 
+
 function risultatiTrovati(){
+    console.log("array" + arrayRisultati);
     return arrayRisultati;
 }
+
+function test(){
+    return "test test test";
+}
+
 /* END FUNZIONI DA RICHIAMARE IN JAVA */
 
 
@@ -214,18 +221,6 @@ function whichTicker(){
 // Quando il DOM si carica
 $(document).ready(function() {
 
-
-    $("#pagelet_canvas_nav_content").after('<div class="controllo"><input id="search_TAL" class="button_TAL search_TAL" type="submit" value=""/><span id="controlloCerca"><input type="text" class="cerca_nome" placeholder="' + chi_vuoi_cercare + '"/></span><p class="printRisultati"></p></div>');
-
-    // nasconde/mostra i ticker in base a quale dei due è visibile
-    // considera anche il resize dello schermo
-    whichTicker();
-    $(window).resize(function() {
-        whichTicker()
-    });
-
-    $('.printRisultati').html(risultati_trovati + ': 0<br>' + aggiornamenti_analizzati + ': 0');
-
     // Controlla inserimento di nuovi aggiornamenti
     $('.tickerActivityStories').on('DOMNodeInserted', function() {
         if (flagInizializza) {
@@ -245,19 +240,4 @@ $(document).ready(function() {
 
     });
 
-    // Inizio ricerca con tasto grafico
-    $('#search_TAL').click(function() {
-        if (!flagInizializza) {
-            inizializza();
-        }
-    });
-
-    // Inizio ricerca premendo tasto ENTER
-    $('.cerca_nome').keypress(function(e) {
-        if (e.which == 13) {
-            if (!flagInizializza) {
-                inizializza();
-            }
-        }
-    });
 });
