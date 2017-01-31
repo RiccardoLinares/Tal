@@ -93,12 +93,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        /*
         //Istanzia la lsita dei risultati
         listaRisultati = new ArrayList<String>();
         listaRisultati.add("prova1");
         listaRisultati.add("prova2");
         //Riempie la scrollView con i risultati della lista
         riempiScrollView(listaRisultati);
+        */
 
         //La funzione JS parte quando premo il bottone
         ricerca.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +108,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO controllo su searchbar vuota
                 effettuaRicerca(mWebView, searchBar.getText().toString());
+
+
+                //funzione per utilizzare l'array di risultatiTrovati in Java
+                mWebView.loadUrl("javascript:window.INTERFACE.riceviDati(risultatiTrovati())");
             }
+
         });
     }
 
@@ -114,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl("javascript:nomeRicerca('" + text + "')");
     }
 
-
+    /*
     //Input: array con i risultati e la scrollview
     private void riempiScrollView(ArrayList<String> risultati) {
         TextView[] textArray;
@@ -137,4 +144,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+    */
 }

@@ -23,7 +23,7 @@ var persona,
     flagTutorial_step2 = false,
     numErrorLimit = 2,
     numError = 0,
-    arrayRisultati = new Array(), //array dei risultati
+    arrayRisultati = [], //array dei risultati //TODO ho modificato con []
     nuoviRisultati = 0, //nuovi risultati per notifiche
     objRisultati = {}, //oggetto dei risultati contiene varMessage=messaggio e varUrl=url
     numero_risultati_notifiche = -1,
