@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button ricerca;
     private EditText searchBar;
     private String oldest, fb_dtsg, xhpc_targetid;
-    private TableLayout tableLayout;
+    public TableLayout tableLayout;
     private ArrayList<String> listaRisultati;
 
     @Override
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mWebView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
 
         //Permette l'esecuzione di setVariabili
-        mWebView.addJavascriptInterface(new MyJavaScriptInterface(), "INTERFACE");
+        mWebView.addJavascriptInterface(new MyJavaScriptInterface(this), "INTERFACE");
 
         // Force links and redirects to open in the WebView instead of in a browser
         mWebView.setWebViewClient(new WebViewClient() {
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                 //TODO controllo su searchbar vuota
                 effettuaRicerca(mWebView, searchBar.getText().toString());
 
-
                 //funzione per utilizzare l'array di risultatiTrovati in Java
                 mWebView.loadUrl("javascript:window.INTERFACE.riceviDati(risultatiTrovati())");
             }
@@ -119,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void effettuaRicerca(WebView webView, String text) {
         webView.loadUrl("javascript:nomeRicerca('" + text + "')");
+    }
+
+    public TableLayout getTableLayout(){
+        return tableLayout;
     }
 
     /*
