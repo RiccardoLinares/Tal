@@ -62,8 +62,8 @@ function risultatiTrovati(){
     return arrayRisultati;
 }
 
-function test(){
-    return "test test test";
+function svuotaRisultati(){
+    arrayRisultati = [];
 }
 
 /* END FUNZIONI DA RICHIAMARE IN JAVA */
@@ -152,6 +152,8 @@ function nascondiDiversi() {
                     varUrl: $(this).find('.tickerStoryLink').attr('href')
                 };
                 arrayRisultati.push(objRisultati);
+
+                window.INTERFACE.riceviDati_test($(this).find('.tickerFeedMessage').text(), $(this).find('.tickerStoryLink').attr('href'));
 
                 if (flagNotification) {
                     nuoviRisultati = nuoviRisultati + 1;

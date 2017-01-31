@@ -13,6 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 
@@ -59,36 +60,63 @@ public class MyJavaScriptInterface {
         //è mediante questi che devo riempire la scrollView
         //il problema è che non so come accedere alla scrollview del main da qui
         Log.d("ARRAY", String.valueOf(input.length));
-        riempiScrollView(input);
+        //riempiScrollView(input);
+        if (input.length > 0) {
+            setBooleanRicevuti(true);
+        } else {
+            setBooleanRicevuti(false);
+        }
+    }
+
+    @JavascriptInterface
+    public void riceviDati_test(String nome, String link) {
+        //input è l'array di dati che mi serve
+        //è mediante questi che devo riempire la scrollView
+        //il problema è che non so come accedere alla scrollview del main da qui
+        Log.d("RISULTATI", nome + " " + link);
+        riempiScrollView(nome, link);
+
     }
 
 
-    private void riempiScrollView(final String[] risultati) {
+    boolean datiRicevuti = false;
+
+    public void setBooleanRicevuti(boolean b) {
+        datiRicevuti = b;
+    }
+
+    public boolean getBooleanRicevuti() {
+        return datiRicevuti;
+    }
+
+
+    private void riempiScrollView(final String nome, final String link) {
         ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 TableLayout table = (TableLayout) ((Activity) mContext).findViewById(R.id.tableLayout);
                 TextView[] textArray;
                 TableRow[] tableRow;
-                textArray = new TextView[risultati.length];
-                tableRow = new TableRow[risultati.length];
-
+                textArray = new TextView[1];
+                tableRow = new TableRow[1];
 
                 // Crea dinamicamente i riquadri degli aggiornamenti
-                for (int i = 0; i < risultati.length; i++) {
-                    //Create the tablerows
-                    tableRow[i] = new TableRow(mContext);
-                    tableRow[i].setBackgroundColor(Color.GRAY);
-                    // Here create the TextView dynamically
-                    textArray[i] = new TextView(mContext);
-                    //TODO textArray[i].setText(risultati[i]);
-                    textArray[i].setText("testo di prova");
-                    textArray[i].setTextColor(Color.WHITE);
-                    textArray[i].setPadding(5, 5, 5, 5);
-                    tableRow[i].addView(textArray[i]);
+                //Create the tablerows
+                tableRow[0] = new TableRow(mContext);
+                tableRow[0].setBackgroundColor(Color.GRAY);
+                // Here create the TextView dynamically
+                textArray[0] = new TextView(mContext);
 
-                    table.addView(tableRow[i]);
-                }
+                //TODO
+                textArray[0].setText(nome + " " + link);
+                //textArray[i].setText("testo di prova");
+
+                textArray[0].setTextColor(Color.WHITE);
+                textArray[0].setPadding(5, 5, 5, 5);
+                tableRow[0].addView(textArray[0]);
+
+                table.addView(tableRow[0]);
+
             }
         });
 

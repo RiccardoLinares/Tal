@@ -35,6 +35,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
         mWebView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
 
         //Permette l'esecuzione di setVariabili
-        mWebView.addJavascriptInterface(new MyJavaScriptInterface(this), "INTERFACE");
+        final MyJavaScriptInterface interfaccia = new MyJavaScriptInterface(this);
+        mWebView.addJavascriptInterface(interfaccia, "INTERFACE");
 
         // Force links and redirects to open in the WebView instead of in a browser
         mWebView.setWebViewClient(new WebViewClient() {
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 // Inject file js into webpage
                 injectScriptFile jquery = new injectScriptFile(getApplicationContext(), view, "js/jquery.js");
                 injectScriptFile actions = new injectScriptFile(getApplicationContext(), view, "js/actions.js");
+
             }
 
             // Intercetta le richieste effettuate al server
@@ -84,14 +88,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 final Uri uri = request.getUrl();
-                if(uri.toString().contains("ticker_entstory.php")){
+                if (uri.toString().contains("ticker_entstory.php")) {
                     Log.d("RISORSA CARICATA", uri.toString());
 
                 }
                 return super.shouldInterceptRequest(view, request);
             }
         });
-
 
         /*
         //Istanzia la lsita dei risultati
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         riempiScrollView(listaRisultati);
         */
 
+
         //La funzione JS parte quando premo il bottone
         ricerca.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,17 +114,33 @@ public class MainActivity extends AppCompatActivity {
                 effettuaRicerca(mWebView, searchBar.getText().toString());
 
                 //funzione per utilizzare l'array di risultatiTrovati in Java
-                mWebView.loadUrl("javascript:window.INTERFACE.riceviDati(risultatiTrovati())");
+                //mWebView.loadUrl("javascript:window.INTERFACE.riceviDati(risultatiTrovati())");
+
+                // Controlla i risultati ogni tot secondi
+                Timer t = new Timer();
+                t.scheduleAtFixedRate(new TimerTask() {
+                   @Override
+                    public void run() {
+                       runOnUiThread(new Runnable() {
+                           public void run() {
+                               mWebView.loadUrl("javascript:window.INTERFACE.riceviDati(risultatiTrovati())");
+                               mWebView.loadUrl("javascript:svuotaRisultati()");
+                           }
+                       });
+                    }
+                }, 1000, 5000);
+
             }
 
         });
     }
 
+
     private void effettuaRicerca(WebView webView, String text) {
         webView.loadUrl("javascript:nomeRicerca('" + text + "')");
     }
 
-    public TableLayout getTableLayout(){
+    public TableLayout getTableLayout() {
         return tableLayout;
     }
 
