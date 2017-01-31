@@ -63,27 +63,36 @@ public class MyJavaScriptInterface {
     }
 
 
-    private void riempiScrollView(String[] risultati) {
-        TableLayout table = (TableLayout) ((Activity)mContext).findViewById(R.id.tableLayout);
-        TextView[] textArray;
-        TableRow[] tableRow;
-        textArray = new TextView[risultati.length];
-        tableRow = new TableRow[risultati.length];
+    private void riempiScrollView(final String[] risultati) {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TableLayout table = (TableLayout) ((Activity) mContext).findViewById(R.id.tableLayout);
+                TextView[] textArray;
+                TableRow[] tableRow;
+                textArray = new TextView[risultati.length];
+                tableRow = new TableRow[risultati.length];
 
-        // Crea dinamicamente i riquadri degli aggiornamenti
-        for (int i = 0; i < risultati.length; i++) {
-            //Create the tablerows
-            tableRow[i] = new TableRow(mContext);
-            tableRow[i].setBackgroundColor(Color.GRAY);
-            // Here create the TextView dynamically
-            textArray[i] = new TextView(mContext);
-            textArray[i].setText(risultati[i]);
-            textArray[i].setTextColor(Color.WHITE);
-            textArray[i].setPadding(5, 5, 5, 5);
-            tableRow[i].addView(textArray[i]);
 
-            table.addView(tableRow[i]);
-        }
+                // Crea dinamicamente i riquadri degli aggiornamenti
+                for (int i = 0; i < risultati.length; i++) {
+                    //Create the tablerows
+                    tableRow[i] = new TableRow(mContext);
+                    tableRow[i].setBackgroundColor(Color.GRAY);
+                    // Here create the TextView dynamically
+                    textArray[i] = new TextView(mContext);
+                    //TODO textArray[i].setText(risultati[i]);
+                    textArray[i].setText("testo di prova");
+                    textArray[i].setTextColor(Color.WHITE);
+                    textArray[i].setPadding(5, 5, 5, 5);
+                    tableRow[i].addView(textArray[i]);
+
+                    table.addView(tableRow[i]);
+                }
+            }
+        });
+
+
     }
 
 }
