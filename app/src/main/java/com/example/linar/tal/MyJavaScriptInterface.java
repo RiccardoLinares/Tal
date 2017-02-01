@@ -7,11 +7,16 @@ import android.graphics.Color;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -19,7 +24,6 @@ import java.util.ArrayList;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.example.linar.tal.R.id.tableLayout;
 
 /**
  * Created by linar on 29/01/2017.
@@ -55,26 +59,12 @@ public class MyJavaScriptInterface {
     }
 
     @JavascriptInterface
-    public void riceviDati(String[] input) {
+    public void riceviDati(String nome, String img, String link) {
         //input è l'array di dati che mi serve
         //è mediante questi che devo riempire la scrollView
         //il problema è che non so come accedere alla scrollview del main da qui
-        Log.d("ARRAY", String.valueOf(input.length));
-        //riempiScrollView(input);
-        if (input.length > 0) {
-            setBooleanRicevuti(true);
-        } else {
-            setBooleanRicevuti(false);
-        }
-    }
-
-    @JavascriptInterface
-    public void riceviDati_test(String nome, String link) {
-        //input è l'array di dati che mi serve
-        //è mediante questi che devo riempire la scrollView
-        //il problema è che non so come accedere alla scrollview del main da qui
-        Log.d("RISULTATI", nome + " " + link);
-        riempiScrollView(nome, link);
+        Log.d("RISULTATI", nome + " " + img + " " + link);
+        riempiScrollView(nome, img, link);
 
     }
 
@@ -90,37 +80,27 @@ public class MyJavaScriptInterface {
     }
 
 
-    private void riempiScrollView(final String nome, final String link) {
+    private void riempiScrollView(final String textRisultato, final String imgUrl, final String link) {
         ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 TableLayout table = (TableLayout) ((Activity) mContext).findViewById(R.id.tableLayout);
-                TextView[] textArray;
-                TableRow[] tableRow;
-                textArray = new TextView[1];
-                tableRow = new TableRow[1];
+                TextView textArray = new TextView(mContext);
+                TableRow tableRow = new TableRow(mContext);
+                ImageView imgView = new ImageView(mContext);
 
-                // Crea dinamicamente i riquadri degli aggiornamenti
-                //Create the tablerows
-                tableRow[0] = new TableRow(mContext);
-                tableRow[0].setBackgroundColor(Color.GRAY);
-                // Here create the TextView dynamically
-                textArray[0] = new TextView(mContext);
+                Picasso.with(mContext).load(imgUrl).into(imgView);
 
-                //TODO
-                textArray[0].setText(nome + " " + link);
-                //textArray[i].setText("testo di prova");
+                //textArray.setText(textRisultato + " " + link);
+                textArray.setText(textRisultato);
 
-                textArray[0].setTextColor(Color.WHITE);
-                textArray[0].setPadding(5, 5, 5, 5);
-                tableRow[0].addView(textArray[0]);
+                tableRow.addView(imgView);
+                tableRow.addView(textArray);
 
-                table.addView(tableRow[0]);
+                table.addView(tableRow);
 
             }
         });
-
-
     }
 
 }

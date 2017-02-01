@@ -16,6 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/checkLogin"
+            android:layout_toEndOf="@+id/button"
+            android:layout_toRightOf="@+id/button"
+            android:hint="Inserisci Nome e Cognome"
+            android:inputType="text"
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -24,25 +35,27 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
 
-            <EditText
-                android:id="@+id/searchBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/checkLogin"
-                android:layout_toEndOf="@+id/button"
-                android:layout_toRightOf="@+id/button"
-                android:hint="Inserisci Nome e Cognome"
-                android:inputType="text"
-                android:layout_alignParentTop="true"
-                android:layout_weight="1" />
-
             <Button
-                android:id="@+id/button"
+                android:id="@+id/startRicerca"
                 android:layout_width="113dp"
                 android:layout_height="wrap_content"
                 android:layout_x="258dp"
                 android:layout_y="5dp"
-                android:text="Ricerca" />
+                android:text="Cerca" />
+
+            <Button
+                android:text="Stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/stopRicerca"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Nuova"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nuovaRicerca"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -51,7 +64,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_height="139dp">
+            android:layout_height="wrap_content">
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -73,14 +86,29 @@
             <WebView
                 android:id="@+id/checkLogin"
                 android:layout_width="match_parent"
-                android:layout_height="187dp"
                 android:layout_above="@+id/scrollView2"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_weight="0.89">
+                android:layout_height="1dp">
 
             </WebView>
         </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:background="@android:color/background_light"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

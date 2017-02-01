@@ -66,6 +66,9 @@ function svuotaRisultati(){
     arrayRisultati = [];
 }
 
+function flagServer(b){
+    flagServer = b;
+}
 /* END FUNZIONI DA RICHIAMARE IN JAVA */
 
 
@@ -132,8 +135,6 @@ function checkNuoviFeed(stringa) {
 }
 
 
-
-
 /* ***** FUNZIONI INTERNE ***** */
 // Nasconde gli elementi diversi dall'input: controlla le persone nella lista e se non corrispondono le elimina!
 function nascondiDiversi() {
@@ -153,7 +154,8 @@ function nascondiDiversi() {
                 };
                 arrayRisultati.push(objRisultati);
 
-                window.INTERFACE.riceviDati_test($(this).find('.tickerFeedMessage').text(), $(this).find('.tickerStoryLink').attr('href'));
+
+                window.INTERFACE.riceviDati($(this).find('.tickerFeedMessage').text(), $(this).find('.tickerStoryImage').attr('src'), $(this).find('.tickerStoryLink').attr('href'));
 
                 if (flagNotification) {
                     nuoviRisultati = nuoviRisultati + 1;
