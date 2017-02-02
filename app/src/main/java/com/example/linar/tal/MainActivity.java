@@ -1,8 +1,12 @@
 package com.example.linar.tal;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
@@ -131,9 +135,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public TableLayout getTableLayout() {
         return tableLayout;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    //TODO
+    /*
+            controllo connesione
+            spalsh screen
+
+     */
+    private void checkConnection(){
+        if (!isNetworkAvailable()) {
+            Log.d("ERRORE", "Internet non disponibile!");
+        }
     }
 
 }

@@ -1,5 +1,10 @@
 package com.example.linar.tal;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
@@ -25,7 +30,24 @@ public class LoginActivity extends AppCompatActivity {
 
         // Force links and redirects to open in the WebView instead of in a browser
         // Stop local links and redirects from opening in browser instead of WebView
-        mWebView.setWebViewClient(new MyAppWebViewClient());
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(Uri.parse(url).getHost().endsWith("takealook-extension.net") && isNetworkAvailable()) {
+                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                    view.getContext().startActivity(intent);
+                    return true;
+                }
 
+                return false;
+            }
+        });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

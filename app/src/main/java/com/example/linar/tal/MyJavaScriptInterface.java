@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -59,8 +60,10 @@ public class MyJavaScriptInterface {
                 TextView textArray = new TextView(mContext);
                 TableRow tableRow = new TableRow(mContext);
                 ImageView imgView = new ImageView(mContext);
+                //imgView.setLayoutParams(new android.view.ViewGroup.LayoutParams(640,640));
 
                 Picasso.with(mContext).load(imgUrl).into(imgView);
+
 
                 //textArray.setText(textRisultato + " " + link);
                 textArray.setText(textRisultato);
@@ -69,6 +72,15 @@ public class MyJavaScriptInterface {
                 tableRow.addView(textArray);
 
                 table.addView(tableRow);
+
+                imgView.getLayoutParams().height = 100;
+                imgView.getLayoutParams().width = 100;
+                tableRow.setPadding(10,10,10,10);
+                tableRow.setBackgroundColor(Color.parseColor("#ffffff"));
+                TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.WRAP_CONTENT);
+                tableRowParams.setMargins(0, 0, 0, 2);
+
+                tableRow.setLayoutParams(tableRowParams);
 
             }
         });
