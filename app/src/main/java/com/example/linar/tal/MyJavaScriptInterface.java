@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ public class MyJavaScriptInterface {
     // VARIABILI
     private String oldest, fb_dtsg, xhpc_targetid;
     public Context mContext;
+    boolean flagwWebLoaded = false;
 
 
     // COSTRUTTORI
@@ -46,41 +48,10 @@ public class MyJavaScriptInterface {
 
 
     //METODI
-    // Istanzia le variabili oldest, fb_dtsg, xhpc_targetid
+
+    //ricevi i dati da js e riempie la scrollView
     @JavascriptInterface
-    public void setVariabili(String old, String dtsg, String xhpc) throws UnsupportedEncodingException {
-        oldest = old.substring(old.indexOf("oldest=") + 7, old.indexOf("&source"));
-        fb_dtsg = dtsg;
-        xhpc_targetid = xhpc;
-
-        Log.d("oldest", oldest);
-        Log.d("fb_dtsg", fb_dtsg);
-        Log.d("xhpc_targetid", xhpc_targetid);
-    }
-
-    @JavascriptInterface
-    public void riceviDati(String nome, String img, String link) {
-        //input è l'array di dati che mi serve
-        //è mediante questi che devo riempire la scrollView
-        //il problema è che non so come accedere alla scrollview del main da qui
-        Log.d("RISULTATI", nome + " " + img + " " + link);
-        riempiScrollView(nome, img, link);
-
-    }
-
-
-    boolean datiRicevuti = false;
-
-    public void setBooleanRicevuti(boolean b) {
-        datiRicevuti = b;
-    }
-
-    public boolean getBooleanRicevuti() {
-        return datiRicevuti;
-    }
-
-
-    private void riempiScrollView(final String textRisultato, final String imgUrl, final String link) {
+    public void riceviDati(final String textRisultato, final String imgUrl, String link) {
         ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -103,4 +74,14 @@ public class MyJavaScriptInterface {
         });
     }
 
+    //ricevi i dati da js ed elimina la schermata di loading
+    @JavascriptInterface
+    public void nascondiLoading() {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            }
+        });
+    }
 }

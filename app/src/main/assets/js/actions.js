@@ -23,9 +23,7 @@ var persona,
     flagTutorial_step2 = false,
     numErrorLimit = 2,
     numError = 0,
-    arrayRisultati = [], //array dei risultati //TODO ho modificato con []
     nuoviRisultati = 0, //nuovi risultati per notifiche
-    objRisultati = {}, //oggetto dei risultati contiene varMessage=messaggio e varUrl=url
     numero_risultati_notifiche = -1,
     numero_risultati_email = -1,
     limite_risultati_visualizzati = 1000,
@@ -57,17 +55,16 @@ function nomeRicerca(stringNome){
 }
 
 
-function risultatiTrovati(){
-    console.log("array" + arrayRisultati);
-    return arrayRisultati;
-}
-
-function svuotaRisultati(){
-    arrayRisultati = [];
-}
-
 function flagServer(b){
     flagServer = b;
+}
+
+function stopServer(){
+    flagServer = false;
+}
+
+function startServer(){
+    flagServer = true;
 }
 /* END FUNZIONI DA RICHIAMARE IN JAVA */
 
@@ -148,12 +145,6 @@ function nascondiDiversi() {
             } else {
                 flagRisultati = true;
                 $(this).addClass('controllatoTAL');
-                objRisultati = {
-                    varMessage: $(this).find('.tickerFeedMessage').text(),
-                    varUrl: $(this).find('.tickerStoryLink').attr('href')
-                };
-                arrayRisultati.push(objRisultati);
-
 
                 window.INTERFACE.riceviDati($(this).find('.tickerFeedMessage').text(), $(this).find('.tickerStoryImage').attr('src'), $(this).find('.tickerStoryLink').attr('href'));
 
@@ -243,5 +234,7 @@ $(document).ready(function() {
         }
 
     });
+
+     window.INTERFACE.nascondiLoading();
 
 });

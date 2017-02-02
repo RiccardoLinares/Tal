@@ -12,98 +12,95 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_above="@+id/checkLogin"
-            android:layout_toEndOf="@+id/button"
-            android:layout_toRightOf="@+id/button"
-            android:hint="Inserisci Nome e Cognome"
-            android:inputType="text"
-            android:layout_alignParentTop="true"
-            android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/startRicerca"
-                android:layout_width="113dp"
+            <EditText
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_x="258dp"
-                android:layout_y="5dp"
-                android:text="Cerca" />
+                android:layout_above="@+id/checkLogin"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/button"
+                android:layout_toRightOf="@+id/button"
+                android:hint="Inserisci Nome e Cognome"
+                android:inputType="text" />
 
-            <Button
-                android:text="Stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/stopRicerca"
-                android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <Button
-                android:text="Nuova"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/nuovaRicerca"
-                android:layout_weight="1" />
+                <Button
+                    android:id="@+id/startRicerca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cerca" />
 
+                <Button
+                    android:id="@+id/nuovaRicerca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nuova" />
+
+                <TextView
+                    android:id="@+id/textConsole"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="A chi vuoi dare un'occhiata?" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="172dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_height="wrap_content">
+            android:layout_alignParentStart="true">
 
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
-                android:layout_height="500px"
+                android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
 
             </TableLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <WebView
+            android:id="@+id/checkLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:weightSum="1">
+            android:layout_above="@+id/scrollView2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
-            <WebView
-                android:id="@+id/checkLogin"
-                android:layout_width="match_parent"
-                android:layout_above="@+id/scrollView2"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_height="1dp">
+        </WebView>
 
-            </WebView>
-        </LinearLayout>
     </LinearLayout>
-
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        tools:background="@android:color/background_light"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        tools:background="@android:color/background_light">
 
         <ProgressBar
             android:layout_width="wrap_content"

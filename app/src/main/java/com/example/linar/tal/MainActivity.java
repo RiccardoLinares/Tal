@@ -1,14 +1,8 @@
 package com.example.linar.tal;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
@@ -20,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -46,12 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private Button stopRicerca;
     private Button nuovaRicerca;
     private EditText searchBar;
-    private String oldest, fb_dtsg, xhpc_targetid;
     public TableLayout tableLayout;
-    private ArrayList<String> listaRisultati;
-    private View progressContainer;
-    private String urlWebView = "http://www.facebook.com";
+    private TextView console;
 
+    public String urlWebView = "https://www.facebook.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +54,11 @@ public class MainActivity extends AppCompatActivity {
         //Istanza dei Widget
         mWebView = (WebView) findViewById(R.id.checkLogin);
         startRicerca = (Button) findViewById(R.id.startRicerca);
-        stopRicerca = (Button) findViewById(R.id.stopRicerca);
         nuovaRicerca = (Button) findViewById(R.id.nuovaRicerca);
 
         searchBar = (EditText) findViewById(R.id.searchBar);
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
-
-        //Posiziona il pannello di loading in cima
-        findViewById(R.id.loadingPanel).bringToFront();
+        console = (TextView) findViewById(R.id.textConsole);
 
         //Disabilita l'apertura della keyboard
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -97,30 +87,26 @@ public class MainActivity extends AppCompatActivity {
                 injectScriptFile actions = new injectScriptFile(getApplicationContext(), view, "js/actions.js");
 
                 // Nasconde il pannello di loading
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             }
         });
 
         //La funzione JS parte quando premo il bottone
         startRicerca.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
                 //TODO controllo su searchbar vuota
-                effettuaRicerca(mWebView, searchBar.getText().toString());
-            }
-        });
+                if(searchBar.getText().toString().length() > 0){
+                    effettuaRicerca(mWebView, searchBar.getText().toString());
+                }
+                else{
+                    console.setText("Inserisci un nome!");
+                }
 
-        //La funzione JS si ferma quando premo il bottone
-        stopRicerca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fermaRicerca(mWebView);
             }
         });
 
         //La funzione JS si ferma quando premo il bottone
         nuovaRicerca.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
                 ricominciaRicerca(mWebView);
             }
@@ -129,29 +115,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void effettuaRicerca(WebView webView, String text) {
-        webView.loadUrl("javascript:flagServer(true)");
+        console.setText("Ricerca in corso...");
+        webView.loadUrl("javascript:startServer()");
         webView.loadUrl("javascript:nomeRicerca('" + text + "')");
     }
 
-    private void fermaRicerca(WebView webView){
-        webView.loadUrl("javascript:flagServer(false)");
-    }
-
     private void ricominciaRicerca(WebView webView){
-        fermaRicerca(webView);
-        webView.loadUrl("javascript:flagServer(true)");
+        console.setText("Riavvio in corso...");
+        webView.loadUrl("javascript:stopServer()");
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
         webView.loadUrl(urlWebView);
         tableLayout.removeAllViews();
+        findViewById(R.id.loadingPanel).bringToFront();
+
     }
+
 
     public TableLayout getTableLayout() {
         return tableLayout;
     }
 
-    //TODO
-    /*
-    -Stop ricerca
-    -Nuova ricerca
-    -Tasto invio
-     */
 }
