@@ -13,9 +13,9 @@ import java.io.InputStream;
  */
 
 
-public class injectScriptFile {
+public class InjectScriptFile {
     // Funzione che inietta il file Js nella webView
-    injectScriptFile(Context myContext, WebView view, String scriptFile) {
+    InjectScriptFile(Context myContext, WebView view, String scriptFile) {
         AssetManager mngr = myContext.getAssets();
 
         InputStream input;

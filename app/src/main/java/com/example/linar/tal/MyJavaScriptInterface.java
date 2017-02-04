@@ -1,12 +1,15 @@
 package com.example.linar.tal;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -36,8 +39,8 @@ public class MyJavaScriptInterface {
     // VARIABILI
     private String oldest, fb_dtsg, xhpc_targetid;
     public Context mContext;
+    public ProgressDialog mProgressDialog;
     boolean flagwWebLoaded = false;
-
 
     // COSTRUTTORI
     public MyJavaScriptInterface() {
@@ -47,6 +50,10 @@ public class MyJavaScriptInterface {
         mContext = c;
     }
 
+    public MyJavaScriptInterface(Context c, ProgressDialog p) {
+        mContext = c;
+        mProgressDialog = p;
+    }
 
     //METODI
 
@@ -62,7 +69,7 @@ public class MyJavaScriptInterface {
                 ImageView imgView = new ImageView(mContext);
                 //imgView.setLayoutParams(new android.view.ViewGroup.LayoutParams(640,640));
 
-                Picasso.with(mContext).load(imgUrl).into(imgView);
+                Picasso.with(mContext).load(imgUrl).resize(100,100).into(imgView);
 
 
                 //textArray.setText(textRisultato + " " + link);
@@ -79,7 +86,6 @@ public class MyJavaScriptInterface {
                 tableRow.setBackgroundColor(Color.parseColor("#ffffff"));
                 TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.WRAP_CONTENT);
                 tableRowParams.setMargins(0, 0, 0, 2);
-
                 tableRow.setLayoutParams(tableRowParams);
 
             }
@@ -89,11 +95,6 @@ public class MyJavaScriptInterface {
     //ricevi i dati da js ed elimina la schermata di loading
     @JavascriptInterface
     public void nascondiLoading() {
-        ((Activity) mContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-            }
-        });
+        mProgressDialog.dismiss();
     }
 }

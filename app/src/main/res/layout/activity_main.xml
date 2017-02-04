@@ -14,7 +14,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/mainContainer">
 
         <LinearLayout
             android:orientation="vertical"
@@ -33,12 +34,13 @@
                 android:inputType="text" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
                 android:weightSum="1">
 
                 <Button
@@ -51,18 +53,24 @@
                     android:id="@+id/nuovaRicerca"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nuova" />
+                    android:text="Reset" />
 
-                <TextView
-                    android:id="@+id/textConsole"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="A chi vuoi dare un'occhiata?" />
+                <Button
+                    android:text="Logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/logoutButton" />
 
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textConsole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="A chi vuoi dare un'occhiata?"
+            android:padding="10dp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -93,20 +101,5 @@
         </WebView>
 
     </LinearLayout>
-    <RelativeLayout
-        android:id="@+id/loadingPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        tools:background="@android:color/background_light">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-    </RelativeLayout>
 
 </RelativeLayout>

@@ -1,53 +1,108 @@
 package com.example.linar.tal;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.util.Log;
+
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import java.util.concurrent.Callable;
+
 
 public class LoginActivity extends AppCompatActivity {
 
-    private WebView mWebView;
+    private LoginButton mFacebookSignInButton;
+    private CallbackManager mFacebookCallbackManager;
+    private AccessTokenTracker mFacebookAccessTokenTracker;
+    private AccessToken token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mFacebookCallbackManager = CallbackManager.Factory.create();
+
+        mFacebookAccessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                if (newAccessToken != null) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        };
+
+
+        // This MUST be placed after the above two lines.
         setContentView(R.layout.activity_login);
 
-        mWebView = (WebView) findViewById(R.id.webView);
 
-        // Enable Javascript
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        mFacebookSignInButton = (LoginButton) findViewById(R.id.login_button);
 
-        mWebView.loadUrl("https://www.facebook.com/v2.8/dialog/oauth?client_id=1416480568615949&redirect_uri=http://takealook-extension.net");
+        mFacebookSignInButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(final LoginResult loginResult) {
 
-        // Force links and redirects to open in the WebView instead of in a browser
-        // Stop local links and redirects from opening in browser instead of WebView
-        mWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(Uri.parse(url).getHost().endsWith("takealook-extension.net") && isNetworkAvailable()) {
-                    Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    view.getContext().startActivity(intent);
-                    return true;
+                        //TODO: Use the Profile class to get information about the current user.
+                        handleSignInResult(new Callable<Void>() {
+                            @Override
+                            public Void call() throws Exception {
+                                LoginManager.getInstance().logOut();
+                                return null;
+                            }
+                        });
+
+                        token = loginResult.getAccessToken();
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        handleSignInResult(null);
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.d(LoginActivity.class.getCanonicalName(), error.getMessage());
+                        handleSignInResult(null);
+                    }
+
                 }
+        );
 
-                return false;
-            }
-        });
+        token = AccessToken.getCurrentAccessToken();
+        Log.d("TOKEN", " "+token);
+
+        if (token != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+
+    private void handleSignInResult(Object o) {
+        // Funzione che usa i dati del login... al momento non serve
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }
