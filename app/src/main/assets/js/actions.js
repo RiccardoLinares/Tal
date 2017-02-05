@@ -42,7 +42,6 @@ var persona,
         TODO
         NOTA BENE:
         da java usa l'interface per chiamare le funzioni javascript e da javascript usa il return per passare le info!
-
 */
 var stringNomeRicerca;
 
@@ -139,6 +138,8 @@ function nascondiDiversi() {
         if (!($(this).hasClass('controllatoTAL'))) {
             persona = $(this).find('.fwb');
             numAggiornamenti = numAggiornamenti + 1;
+
+            window.INTERFACE.getNumAggiornamenti(numAggiornamenti);
 
             if (!(persona.text().toLowerCase().indexOf(stringNomeRicerca.toLowerCase()) >= 0)) {
                 $(this).remove();

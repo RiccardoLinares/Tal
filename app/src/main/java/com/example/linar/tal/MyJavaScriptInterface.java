@@ -97,4 +97,17 @@ public class MyJavaScriptInterface {
     public void nascondiLoading() {
         mProgressDialog.dismiss();
     }
+
+    //ricevi i dati da js ed elimina la schermata di loading
+    @JavascriptInterface
+    public void getNumAggiornamenti(final int num) {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView t = (TextView) ((Activity) mContext).findViewById(R.id.textConsole);
+                t.setText("Numero di aggiornamenti analizzati: " + num);
+            }
+        });
+    }
+
 }

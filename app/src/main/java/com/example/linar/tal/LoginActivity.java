@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         mFacebookSignInButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-
                         //TODO: Use the Profile class to get information about the current user.
                         handleSignInResult(new Callable<Void>() {
                             @Override

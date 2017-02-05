@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -128,13 +129,13 @@ public class MainActivity extends AppCompatActivity {
                 // Inject file js into webpage
                 InjectScriptFile jquery = new InjectScriptFile(getApplicationContext(), view, "js/jquery.js");
                 InjectScriptFile actions = new InjectScriptFile(getApplicationContext(), view, "js/actions.js");
+                progress.dismiss();
             }
         });
 
         //La funzione JS parte quando premo il bottone
         startRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //TODO controllo su searchbar vuota
                 if (searchBar.getText().toString().length() > 0) {
                     effettuaRicerca(mWebView, searchBar.getText().toString());
                 } else {
